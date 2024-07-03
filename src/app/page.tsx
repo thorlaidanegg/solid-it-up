@@ -10,7 +10,7 @@ export default function Home() {
             <div className='relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start'>
             <div className='absolute w-28 left-0 -top-20 hidden lg:block'>
                 <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t via-slate-50/50 from-slate-50 h-28' />
-                <img src='/snake-1.png' className='w-full' />
+                Hello World
               </div>
             </div>
           </div>
