@@ -1,21 +1,72 @@
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import Image from "next/image";
+'use client'
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import hero from '../../public/hero.png';
+import { ParallaxScroll } from '@/components/parallaxScroll';
+import { FlipWords } from '@/components/ui/flip-words';
+import Footer from '@/components/footer';
+import { Button } from "@/components/ui/button"
 
-export default function Home() {
+
+const Home: React.FC = () => {
+  const words = ["better", "cute", "beautiful", "modern"];
+  const [isBlackBackground, setIsBlackBackground] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const zoomElement = document.getElementById('background-image');
+
+      if (zoomElement) {
+        if (scrollPosition > 0 && scrollPosition <= window.innerHeight) {
+          zoomElement.classList.add('scale-110');
+        } else {
+          zoomElement.classList.remove('scale-110');
+        }
+      }
+
+      // Check if scrolled 2.5 times the viewport height
+      if (scrollPosition >   window.innerHeight) {
+        setIsBlackBackground(true);
+      } else {
+        setIsBlackBackground(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="bg-slate-50 grainy-light">
-      <section>
-        <MaxWidthWrapper className="pb-24 pt-10 lg:grid lg:grid-cols-3 sm:pb-32 lg:gap-x-0 xl:gap-x-8 lg:pt-24 xl:pt-32 lg:pb-52">
-          <div className='col-span-2 px-6 lg:px-0 lg:pt-4'>
-            <div className='relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start'>
-            <div className='absolute w-28 left-0 -top-20 hidden lg:block'>
-                <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t via-slate-50/50 from-slate-50 h-28' />
-                <img src='/snake-1.png' className='w-full' />
-              </div>
-            </div>
+    <div className={`text-3xl transition-colors duration-500 ${isBlackBackground ? 'bg-black text-white' : ''}`}>
+      <div className="relative w-full h-[90vh]">
+        <div id="background-image" className="absolute top-0 left-0 w-full h-full overflow-hidden transition-transform duration-500 ease-out">
+          <Image src={hero} alt="Hero" layout="fill" objectFit="cover" />
+          <div className="h-[40rem] flex justify-center items-center mr-[100vh]">
+            <FlipWords words={words}/>
           </div>
-        </MaxWidthWrapper>
-      </section>
+        </div>
+      </div>
+
+      <div className="h-[70vh] text-9xl flex items-center">
+        <h1>Solid It UP</h1>
+        <div>
+
+        </div>
+      </div>
+
+      <ParallaxScroll/>
+
+      <div className=" h-[80vh] text-8xl flex items-center justify-between ">
+          Checkout The Store
+          <Button className="text-4xl w-60 h-20 mr-40 hover:bg-slate-700"  >Store</Button>
+      </div>
+
+      <Footer/>
     </div>
   );
-}
+};
+
+export default Home;
