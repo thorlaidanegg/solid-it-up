@@ -96,7 +96,7 @@ const Home: React.FC = () => {
         transition={{ type: 'spring', stiffness: 70 }}
         className="text-7xl text-right mx-52 mb-24 flex justify-end"
       >
-        Make your own one <Button className='text-4xl w-48 h-16  ml-10 p-9 hover:bg-slate-700'>Go</Button>
+        Make your own one <Button onClick={() => router.push('/configure/upload')} className='text-4xl w-48 h-16  ml-10 p-9 hover:bg-slate-700'>Go</Button>
       </motion.div>
 
       <ParallaxScroll />

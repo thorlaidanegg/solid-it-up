@@ -17,6 +17,7 @@ import { PiPants } from "react-icons/pi";
 import { GiSleevelessJacket } from "react-icons/gi";
 import { FaRobot } from "react-icons/fa";
 import { AiFillPicture } from "react-icons/ai";
+import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -37,7 +38,8 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className={`z-50 fixed top-0 left-0 w-full bg-transparent transition-transform duration-500 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+    <div className="">
+    <div className={` z-50 fixed top-0 left-0 w-full bg-transparent transition-transform duration-500 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="flex justify-between items-center p-4">
         <div className=''>
           <Sheet>
@@ -77,10 +79,15 @@ const Navbar = () => {
             </SheetContent>
           </Sheet>
         </div>
-        <Link href="/">
-          <SiZcool className="text-white" size="45" />
-        </Link>
-        <div>
+
+
+        <div className="flex gap-x-20">
+
+          <div className="flex gap-5">
+          <LoginLink className="bg-white px-4 pt-2 rounded-lg">Sign in</LoginLink>
+          <RegisterLink className="bg-white px-4 pt-2 rounded-lg">Sign up</RegisterLink>
+          </div>
+
           <Sheet>
             <SheetTrigger><IoBag className="text-white" size="45" /></SheetTrigger>
             <SheetContent>
@@ -95,6 +102,7 @@ const Navbar = () => {
           </Sheet>
         </div>
       </div>
+    </div>
     </div>
   );
 }
