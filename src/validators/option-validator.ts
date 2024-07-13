@@ -27,26 +27,32 @@ export const MODELS = {
     {
       label: 'T shirt',
       value: 'tshirt',
+      price: PRODUCT_PRICES.model.tshirt
     },
     {
       label: 'Oversized T shirt ',
       value: 'oversizedTshirt',
+      price: PRODUCT_PRICES.model.oversizedTshirt
     },
     {
       label: 'Pants',
       value: 'pants',
+      price: PRODUCT_PRICES.model.pants
     },
     {
       label: 'Cargos',
       value: 'cargos',
+      price: PRODUCT_PRICES.model.cargos
     },
     {
       label: 'Varsity',
       value: 'varsity',
+      price: PRODUCT_PRICES.model.varsity
     },
     {
       label: 'Jacket',
       value: 'jacket',
+      price: PRODUCT_PRICES.model.jacket
     },
   ],
 } as const

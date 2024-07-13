@@ -1,5 +1,4 @@
 'use client'
-
 import HandleComponent from '@/components/HandleComponent'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -24,12 +23,12 @@ import { Button } from '@/components/ui/button'
 import { LuChevronsUpDown } from "react-icons/lu";
 import { FaCheck } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
-import { BASE_PRICE } from '@/config/products'
 import { useUploadThing } from '@/lib/uploadthing'
 import { useToast } from '@/components/ui/use-toast'
 import { useMutation } from '@tanstack/react-query'
 import { saveConfig as _saveConfig, SaveConfigArgs } from './actions'
 import { useRouter } from 'next/navigation'
+import ShirtModel from '@/components/ShirtModel.jsx'
 
 interface DesignConfiguratorProps {
   configId: string
@@ -71,6 +70,7 @@ const DesignConfigurator = ({
     model: MODELS.options[0],
     material: MATERIALS.options[0],
   })
+
 
   const [renderedDimension, setRenderedDimension] = useState({
     width: imageDimensions.width / 4,
@@ -151,31 +151,24 @@ const DesignConfigurator = ({
   }
 
   return (
-    <div className='relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20'>
+    <div className='bg-black relative grid grid-cols-1 lg:grid-cols-3 pt-32 p-20'>
       <div
         ref={containerRef}
-        className='relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'>
-        <div className='relative w-60 bg-opacity-50 pointer-events-none aspect-[896/1831]'>
+        className='bg-gray-400 relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-[1px] border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'>
+        <div className='relative w-80 bg-opacity-50 pointer-events-none aspect-[2000/3000]'>
           <AspectRatio
             ref={phoneCaseRef}
-            ratio={896 / 1831}
-            className='pointer-events-none relative z-50 aspect-[896/1831] w-full'>
-            <NextImage
-              fill
-              alt='phone image'
-              src='/phone-template.png'
-              className='pointer-events-none z-50 select-none'
-            />
+            ratio={2000 / 3000}
+            className='pointer-events-none relative z-20 aspect-[2000/3000] w-full'>
+            {/* ShirtModel component */}
+            <ShirtModel color={options.color.value}/>
+
+            {/* Overlay for image */}
+            <div className='absolute z-50 inset-0 left-[3px] right-[3px] bottom-px rounded-[0px] ' />
           </AspectRatio>
-          <div className='absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]' />
-          <div
-            className={cn(
-              'absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px]',
-              `bg-${options.color.tw}`
-            )}
-          />
         </div>
 
+        {/* Rnd component for image */}
         <Rnd
           default={{
             x: 150,
@@ -195,7 +188,7 @@ const DesignConfigurator = ({
             const { x, y } = data
             setRenderedPosition({ x, y })
           }}
-          className='absolute z-20 border-[3px] border-primary'
+          className='absolute z-30 border-[3px] border-primary'
           lockAspectRatio
           resizeHandleComponent={{
             bottomRight: <HandleComponent />,
@@ -265,43 +258,51 @@ const DesignConfigurator = ({
 
                 <div className='relative flex flex-col gap-3 w-full'>
                   <Label>Model</Label>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant='outline'
-                        role='combobox'
-                        className='w-full justify-between'>
-                        {options.model.label}
-                        <LuChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                  <RadioGroup
+                    value={options.model}
+                    onChange={(val) => {
+                      setOptions((prev) => ({
+                        ...prev,
+                        model: val,
+                      }));
+                    }}>
+                    <div className='mt-3 space-y-4'>
                       {MODELS.options.map((model) => (
-                        <DropdownMenuItem
+                        <RadioGroup.Option
                           key={model.label}
-                          className={cn(
-                            'flex text-sm gap-1 items-center p-1.5 cursor-default hover:bg-zinc-100',
-                            {
-                              'bg-zinc-100':
-                                model.label === options.model.label,
-                            }
-                          )}
-                          onClick={() => {
-                            setOptions((prev) => ({ ...prev, model }))
-                          }}>
-                          <FaCheck 
-                            className={cn(
-                              'mr-2 h-4 w-4',
-                              model.label === options.model.label
-                                ? 'opacity-100'
-                                : 'opacity-0'
-                            )}
-                          />
-                          {model.label}
-                        </DropdownMenuItem>
+                          value={model}
+                          className={({ active, checked }) =>
+                            cn(
+                              'relative block cursor-pointer rounded-lg bg-white px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none ring-0 focus:ring-0 outline-none sm:flex sm:justify-between',
+                              {
+                                'border-primary': active || checked,
+                              }
+                            )
+                          }>
+                          <span className='flex items-center'>
+                            <span className='flex flex-col text-sm'>
+                              <RadioGroup.Label className='font-medium text-gray-900' as='span'>
+                                {model.label}
+                              </RadioGroup.Label>
+                            </span>
+                          </span>
+
+                          <RadioGroup.Description as='span' className='mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right'>
+                            {/* Add additional descriptions or data as needed */}
+                          </RadioGroup.Description>
+
+                          <RadioGroup.Description
+                              as='span'
+                              className='mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right'>
+                              <span className='font-medium text-gray-900'>
+                                {formatPrice(model.price)}
+                              </span>
+                            </RadioGroup.Description>
+
+                        </RadioGroup.Option>
                       ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                    </div>
+                  </RadioGroup>
                 </div>
 
                 {[MATERIALS].map(
@@ -375,7 +376,7 @@ const DesignConfigurator = ({
             <div className='w-full flex gap-6 items-center'>
               <p className='font-medium whitespace-nowrap'>
                 {formatPrice(
-                  (BASE_PRICE  + options.material.price)
+                  (options.model.price  + options.material.price)
                 )}
               </p>
               <Button
