@@ -95,7 +95,7 @@ const Page = () => {
                         <p>Uploading...</p>
                         <Progress
                           value={uploadProgress}
-                          className='mt-2 w-40 h-2 bg-gray-300'
+                          className='mt-2 w-40 h-2 bg-white'
                         />
                       </div>
                     ) : isPending ? (

@@ -106,7 +106,7 @@ const Home: React.FC = () => {
         <Button className="text-4xl w-60 h-20 mr-40 hover:bg-slate-700" onClick={() => router.push('/store')}>Store</Button>
       </div>
 
-      <Footer />
+
     </div>
   );
 };
